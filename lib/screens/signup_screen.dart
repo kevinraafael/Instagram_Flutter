@@ -3,14 +3,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_clone/utils/color.dart';
 import 'package:instagram_clone/widgets/text_field_input.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreen();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreen extends State<SignupScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
@@ -39,12 +39,30 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Container(),
               flex: 2,
             ),
-            SvgPicture.asset(
-              'assets/ic_instagram.svg',
-              color: primaryColor,
-              height: 64,
+            Stack(
+              children: [
+                const CircleAvatar(
+                  radius: 64,
+                  backgroundImage: NetworkImage(
+                      'https://images.unsplash.com/photo-1638913660695-b490171d17c9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1472&q=80'),
+                ),
+                Positioned(
+                  bottom: -10,
+                  left: 80,
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.add_a_photo),
+                  ),
+                )
+              ],
             ),
-            const SizedBox(height: 64),
+            const SizedBox(height: 24),
+            TextFieldInput(
+              textEditingController: _usernameController,
+              hintText: 'Digite  seu  nome de usuário',
+              textInputType: TextInputType.text,
+            ),
+            const SizedBox(height: 24),
             TextFieldInput(
               textEditingController: _emailController,
               hintText: 'Digite  seu email',
@@ -58,9 +76,15 @@ class _LoginScreenState extends State<LoginScreen> {
               isPass: true,
             ),
             const SizedBox(height: 24),
+            TextFieldInput(
+              textEditingController: _bioController,
+              hintText: 'Digite  sua  bio',
+              textInputType: TextInputType.text,
+            ),
+            const SizedBox(height: 24),
             InkWell(
               child: Container(
-                child: const Text('Login'),
+                child: const Text('Cadastrar'),
                 width: double.infinity,
                 alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(vertical: 12),
