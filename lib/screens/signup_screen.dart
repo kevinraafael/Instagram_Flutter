@@ -1,6 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:instagram_clone/resources/auth_methods.dart';
 import 'package:instagram_clone/utils/color.dart';
+import 'package:instagram_clone/utils/utils.dart';
 import 'package:instagram_clone/widgets/text_field_input.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -15,6 +20,7 @@ class _SignupScreen extends State<SignupScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
+  Uint8List? _image;
   @override
   void dispose() {
     super.dispose();
@@ -23,6 +29,13 @@ class _SignupScreen extends State<SignupScreen> {
     _bioController.dispose();
     _usernameController.dispose();
     //Clear all the controllers when leeft the page
+  }
+
+  void selectImage() async {
+    Uint8List im = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = im;
+    });
   }
 
   @override
@@ -39,18 +52,29 @@ class _SignupScreen extends State<SignupScreen> {
               child: Container(),
               flex: 2,
             ),
+            SvgPicture.asset(
+              'assets/ic_instagram.svg',
+              color: primaryColor,
+              height: 64,
+            ),
+            const SizedBox(height: 34),
             Stack(
               children: [
-                const CircleAvatar(
-                  radius: 64,
-                  backgroundImage: NetworkImage(
-                      'https://images.unsplash.com/photo-1638913660695-b490171d17c9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1472&q=80'),
-                ),
+                _image != null
+                    ? CircleAvatar(
+                        radius: 64,
+                        backgroundImage: MemoryImage(_image!),
+                      )
+                    : const CircleAvatar(
+                        radius: 64,
+                        backgroundImage: NetworkImage(
+                            'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg'),
+                      ),
                 Positioned(
                   bottom: -10,
                   left: 80,
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: selectImage,
                     icon: const Icon(Icons.add_a_photo),
                   ),
                 )
@@ -83,6 +107,16 @@ class _SignupScreen extends State<SignupScreen> {
             ),
             const SizedBox(height: 24),
             InkWell(
+              onTap: (() async {
+                String response = await AuthMethods().signupUser(
+                  email: _emailController.text,
+                  password: _passwordController.text,
+                  username: _usernameController.text,
+                  bio: _bioController.text,
+                  file: _image!,
+                );
+                print(response);
+              }),
               child: Container(
                 child: const Text('Cadastrar'),
                 width: double.infinity,
@@ -98,12 +132,13 @@ class _SignupScreen extends State<SignupScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 12),
+            Container()
+            /*  const SizedBox(height: 12),
             Flexible(
               child: Container(),
               flex: 2,
-            ),
-            Row(
+            ), */
+            /*  Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
@@ -127,7 +162,7 @@ class _SignupScreen extends State<SignupScreen> {
                   ),
                 )
               ],
-            )
+            ) */
           ],
         ),
       )),
