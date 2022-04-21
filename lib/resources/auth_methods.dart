@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/resources/storage_methods.dart';
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -27,6 +28,10 @@ class AuthMethods {
             email: email, password: password);
         // Salvar os dados do usuário no banco
         print(credential.user!.uid);
+
+        // Vou chamar minha função que salva a photo do usuári
+        String photoUrl = await StorageMethods()
+            .uploadImageToStorage('profilePics', file, false);
         //Aqui basicamente ele vai criar uma coleção e salvar os dados nessa coleção
         await _firestore.collection('users').doc(credential.user!.uid).set({
           'username': username,
@@ -35,6 +40,7 @@ class AuthMethods {
           'bio': bio,
           'folowers': [],
           'folowing': [],
+          'photoUrl': photoUrl
         });
         res = 'success';
         /*
