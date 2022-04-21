@@ -44,7 +44,7 @@ class AuthMethods {
         });
         res = 'success';
         /*
-        PArei no  1:27
+       
          await _firestore.collection('users').add({
           'username': username,
           'uid': credential.user!.uid,
