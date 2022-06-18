@@ -21,6 +21,7 @@ class _SignupScreen extends State<SignupScreen> {
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   Uint8List? _image;
+  bool _isLoading = false;
   @override
   void dispose() {
     super.dispose();
@@ -39,6 +40,10 @@ class _SignupScreen extends State<SignupScreen> {
   }
 
   void signupUser() async {
+    setState(() {
+      _isLoading = true; // Atualiza o estado dela para true ,
+      //pois a operação está sendo carregada
+    });
     String response = await AuthMethods().signupUser(
       email: _emailController.text,
       password: _passwordController.text,
@@ -46,6 +51,9 @@ class _SignupScreen extends State<SignupScreen> {
       bio: _bioController.text,
       file: _image!,
     );
+    setState(() {
+      _isLoading = false;
+    });
     response != 'sucess' ? showSnackBar(response, context) : '';
   }
 
@@ -123,7 +131,13 @@ class _SignupScreen extends State<SignupScreen> {
               InkWell(
                 onTap: signupUser,
                 child: Container(
-                  child: const Text('Cadastrar'),
+                  child: _isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: primaryColor,
+                          ),
+                        )
+                      : const Text('Cadastrar'),
                   width: double.infinity,
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(vertical: 12),
