@@ -4,9 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/resources/auth_methods.dart';
+import 'package:instagram_clone/responsive/responsive_layout_screen.dart';
+import 'package:instagram_clone/responsive/web_screen_layout.dart';
+import 'package:instagram_clone/screens/login_screen.dart';
 import 'package:instagram_clone/utils/color.dart';
 import 'package:instagram_clone/utils/utils.dart';
 import 'package:instagram_clone/widgets/text_field_input.dart';
+
+import '../responsive/mobile_screen_layout.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -54,7 +59,24 @@ class _SignupScreen extends State<SignupScreen> {
     setState(() {
       _isLoading = false;
     });
-    response != 'sucess' ? showSnackBar(response, context) : '';
+    response == "success"
+        ? Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const ResponsiveLayout(
+                webScreenLayout: WebScreenLayout(),
+                mobileScreenLayout: MobileScreenLayout(),
+              ),
+            ),
+          )
+        : showSnackBar(response, context);
+  }
+
+  void navigateToLogin() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const LoginScreen(),
+      ),
+    );
   }
 
   @override
@@ -156,20 +178,20 @@ class _SignupScreen extends State<SignupScreen> {
                 child: Container(),
                 flex: 2,
               ),
-              /*  Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    child: const Text('Não tem uma conta ?'),
+                    child: const Text('Já possui uma conta ?'),
                     padding: const EdgeInsets.symmetric(
                       vertical: 8,
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: navigateToLogin,
                     child: Container(
                       child: const Text(
-                        ' Cadastrar',
+                        ' Voltar para Login',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
@@ -180,7 +202,7 @@ class _SignupScreen extends State<SignupScreen> {
                     ),
                   )
                 ],
-              ) */
+              )
             ],
           ),
         ),

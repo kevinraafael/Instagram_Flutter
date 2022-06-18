@@ -74,11 +74,15 @@ class AuthMethods {
       if (email.isNotEmpty || password.isNotEmpty) {
         await _auth.signInWithEmailAndPassword(
             email: email, password: password);
-        res = "sucesss";
+        res = "sucess";
       } else {
         res = "Por favor preencha todos os campos";
       }
-    } catch (err) {
+    } /* Para quando ocorrer um erro na autenticação no bd
+     on FirebaseAuthException catch(e){
+      e.code =='user-not-found'?
+    }  */
+    catch (err) {
       res = err.toString();
     }
     return res;
