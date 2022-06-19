@@ -10,6 +10,22 @@ import 'package:instagram_clone/models/user.dart' as model;
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<model.User> getUserDetails() async {
+    User currentUser = _auth.currentUser!;
+    DocumentSnapshot snap =
+        await _firestore.collection('users').doc(currentUser.uid).get();
+    return model.User.fromSnap(snap);
+    //Recebe os dados da coleção como um document snapshot e por meio do método from Snap
+    //implementado  na model user ele "divide nas propriedades" de user
+
+    /*
+    A DocumentSnapshot is returned from a query, or by accessing
+     the document directly. Even if no document exists in the database,
+      a snapshot will always be returned.
+    */
+  }
+
   //Cadastrar Usuário , uma função assincrona pois toda operação que depende do firebase é assincrona
   Future<String> signupUser({
     required String email,
