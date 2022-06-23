@@ -6,7 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/utils/color.dart';
 import 'package:instagram_clone/utils/utils.dart';
 import 'package:provider/provider.dart';
-import 'package:instagram_clone/models/user.dart' as model;
+import 'package:instagram_clone/models/user.dart';
+import '../models/user.dart';
 import '../providers/user_provider.dart';
 
 class AddPostScreen extends StatefulWidget {
@@ -18,6 +19,15 @@ class AddPostScreen extends StatefulWidget {
 
 class _AddPostScreenState extends State<AddPostScreen> {
   Uint8List? _file;
+  final TextEditingController _descriptionController = TextEditingController();
+
+  void postImage(
+    String uuid,
+    String username,
+    String profImage,
+  ) async {
+    try {} catch (e) {}
+  }
 
   _selectImage(BuildContext context) async {
     return showDialog(
@@ -51,6 +61,13 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 });
               },
             ),
+            SimpleDialogOption(
+              padding: const EdgeInsets.all(20),
+              child: Text('Fechar'),
+              onPressed: () async {
+                Navigator.of(context).pop();
+              },
+            ),
           ],
         );
       },
@@ -58,8 +75,16 @@ class _AddPostScreenState extends State<AddPostScreen> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // model.User user = Provider.of<UserProvider>(context).getUser;
+    final User user = Provider.of<UserProvider>(context).getUser;
     return _file == null
         ? Center(
             child: IconButton(
@@ -94,12 +119,12 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   CircleAvatar(
-                    backgroundImage: const NetworkImage(
-                        'https://pbs.twimg.com/media/FVf3ITQVEAU-kxH.png'),
+                    backgroundImage: NetworkImage(user.photoUrl),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.4,
                     child: TextField(
+                      controller: _descriptionController,
                       decoration: InputDecoration(
                         hintText: 'Escreva uma legenda',
                         border: InputBorder.none,
@@ -115,8 +140,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       child: Container(
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: NetworkImage(
-                                'https://pbs.twimg.com/media/FVf3ITQVEAU-kxH.png'),
+                            image: MemoryImage(_file!),
                             fit: BoxFit.fill,
                             alignment: FractionalOffset.topCenter,
                           ),
