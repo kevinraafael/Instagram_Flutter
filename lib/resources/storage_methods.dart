@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:uuid/uuid.dart';
 
 // Função que salva uma foto do usuário no Firebase storage e retorna uma url desse arquivo
 class StorageMethods {
@@ -13,7 +14,11 @@ class StorageMethods {
     Reference ref =
         _storage.ref().child(childName).child(_auth.currentUser!.uid);
     //Como estamos usando o Uint8List tem quer ser o putData e não putFile
+    if (isPost) {
+      String id = const Uuid().v1();
+      ref = ref.child(id); // Dar um id ao post
 
+    }
     //UploadTask é similar ao tipo Future
     UploadTask uploadTask = ref.putData(file);
     TaskSnapshot snap = await uploadTask;
