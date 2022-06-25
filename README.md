@@ -1,4 +1,4 @@
-# Entregador
+# Instagram_Clone
 
 - O projeto utiliza o flutter como framework para desenvolvimento, sendo essa e versão 2.10.3
 
