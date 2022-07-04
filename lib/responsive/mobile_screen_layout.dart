@@ -55,7 +55,6 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
         physics: NeverScrollableScrollPhysics(), // Bloquei a troca de páginas
         //por meio deslize para os lados
       ),
-      //Parei no 2:52
       bottomNavigationBar: CupertinoTabBar(
         backgroundColor: mobileBackgroundColor,
         items: [
@@ -83,18 +82,18 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
             label: '',
             backgroundColor: primaryColor,
           ),
-          BottomNavigationBarItem(
+          /* BottomNavigationBarItem(
             icon: Icon(
               Icons.favorite,
               color: _page == 3 ? primaryColor : secondaryColor,
             ),
             label: '',
             backgroundColor: primaryColor,
-          ),
+          ), */
           BottomNavigationBarItem(
             icon: Icon(
               Icons.person,
-              color: _page == 4 ? primaryColor : secondaryColor,
+              color: _page == 3 ? primaryColor : secondaryColor,
             ),
             label: '',
             backgroundColor: primaryColor,

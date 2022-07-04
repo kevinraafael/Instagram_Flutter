@@ -12,7 +12,7 @@ List<Widget> homeScreenItems = [
   FeedScreen(),
   SearchScreen(),
   AddPostScreen(),
-  Text('notif'),
+  //Text('telanotificacao'),
   ProfileScreen(
     uid: FirebaseAuth.instance.currentUser!.uid,
   ),
